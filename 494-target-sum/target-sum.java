@@ -1,5 +1,5 @@
 class Solution {
-    public int fun(int i, int s, int target, int[] nums){
+    public int fun(int i, int s, int target, int[] nums, HashMap<String,Integer> dp){
         if(i==nums.length){
             if(s==target){
                 return 1;
@@ -8,12 +8,20 @@ class Solution {
             }
         }
 
-        int c1= fun(i+1, s+nums[i], target, nums);
-        int c2= fun(i+1, s-nums[i], target, nums);
+        String key= i+","+s;
+
+        if(dp.containsKey(key)){
+            return dp.get(key);
+        }
+
+        int c1= fun(i+1, s+nums[i], target, nums, dp);
+        int c2= fun(i+1, s-nums[i], target, nums, dp);
+        dp.put((key), c1+c2);
         return c1+c2;
     }
 
     public int findTargetSumWays(int[] nums, int target) {
-        return fun(0,0, target, nums);
+        HashMap<String, Integer> dp= new HashMap<>();
+        return fun(0,0, target, nums, dp);
     }
 }
