@@ -1,48 +1,37 @@
 class Solution {
     int[] x= {-1,1,0,0};
     int[] y= {0,0,-1,1};
+    int res=0;
 
-    public boolean valid(int i, int j, int n, int m){
-        if(i<0 || i>=n || j<0 || j>=m){
+    public boolean isvalid(int i, int j, int m, int n){
+        if(i<0 || i>=m || j<0 || j>=n){
             return false;
         }
         return true;
     }
 
-    public void dfs(int i, int j, char[][] grid, int[][] visit){
-        int n=grid.length;
-        int m=grid[0].length;
-
-        visit[i][j]=1;  //visit array
-
+    public void count(int i, int j, char[][] grid){
+        int m= grid.length; 
+        int n= grid[0].length;
         for(int k=0; k<4; k++){
-            int row= i+x[k];    //i and j and n and m 
-            int col= j+y[k];
-            if(valid(row,col,n,m) && visit[row][col]==0 && grid[row][col]=='1'){
-                dfs(row,col,grid,visit);
+            int x1= i+x[k];
+            int y1= j+y[k];
+            if(isvalid(x1,y1,m,n) && grid[x1][y1]=='1'){
+                grid[x1][y1]='0';
+                count(x1,y1,grid);
             }
         }
-
-        return;
     }
- 
+
     public int numIslands(char[][] grid) {
-        int n=grid.length;
-        int m= grid[0].length;
-        int[][] visit= new int[n][m];
-        int res=0;
-
-        int i,j;
-
-        for( i=0; i<n ;i++){
-            for( j=0; j<m; j++){
-                if(visit[i][j]==0 && grid[i][j]=='1'){
-                    dfs(i, j, grid, visit);
+        for(int i=0; i<grid.length; i++){
+            for(int j=0; j<grid[0].length; j++){
+                if(grid[i][j]=='1'){
                     res++;
+                    count(i, j, grid);
                 }
             }
         }
-
         return res;
     }
 }
